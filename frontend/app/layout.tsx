@@ -1,7 +1,6 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import { type Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { siteConfig } from "../lib/config/sitecf";
 import { Providers } from "../components/providers";
 import Layout from "../components/root-layout";
 
@@ -21,21 +20,15 @@ const fontHeading = Inter({
 });
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
-  description: siteConfig.description,
+  title: "PlanetHeat",
+  description: "Machine Learning based prediction model for global temperature",
 }
 
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`min-h-screen bg-background antialiased ${fontSans.variable} ${fontMono.variable} ${fontHeading.variable}`}
-      >
+      <body className={`min-h-screen bg-background antialiased ${fontSans.variable} ${fontMono.variable} ${fontHeading.variable}`}>
         <Providers>
           <Layout>
             {children}

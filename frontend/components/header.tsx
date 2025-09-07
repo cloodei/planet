@@ -1,11 +1,10 @@
 "use client";
 
 import { GithubIcon } from "lucide-react";
-import { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/lib/config/sitecf";
 import { ThemeToggler } from "./toggler";
 
 type LinkProps = ComponentProps<typeof Button> & {
@@ -32,12 +31,12 @@ export function Header() {
   }
 
   return (
-    <nav className="">
+    <nav className="fixed top-0 left-0 right-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center space-x-8">
             <Link href="/" className="text-xl font-bold text-primary">
-              {siteConfig.name}
+              PlanetHeat
             </Link>
             <div className="hidden md:flex space-x-6">
               <Link
@@ -59,7 +58,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="rounded-full" asChild>
               <a
-              href={siteConfig.socials.github}
+              href="https://github.com/clood/planetheat"
               target="_blank"
               rel="noopener noreferrer"
               >
