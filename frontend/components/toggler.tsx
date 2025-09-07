@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export function ThemeToggler({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
-  const [systemTheme, setSystemTheme] = useState<"light" | "dark">("light");
+  const [_, setSystemTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -21,19 +21,12 @@ export function ThemeToggler({ className }: { className?: string }) {
   }, []);
 
   const switchTheme = () => {
-    switch (theme) {
-      case "light":
-        setTheme("dark");
-        break;
-      case "dark":
-        setTheme("light");
-        break;
-      case "system":
-        setTheme(systemTheme === "light" ? "dark" : "light");
-        break;
-      default:
-        break;
+    if (theme === "dark") {
+      setTheme("light");
+      return;
     }
+
+    setTheme("dark");
   };
 
   const toggleTheme = () => {

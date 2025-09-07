@@ -1,12 +1,11 @@
-import Link from "next/link";
-import { ArrowRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Predictor } from "@/components/predictor";
 
 export default function Home() {
   return (
     <div className="relative overflow-hidden">
       <div className="relative space-y-20">
-        <div className="text-center space-y-8 pt-12 pb-8">
+        <div className="text-center space-y-8 pb-8">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary border border-primary/20">
               <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
@@ -24,24 +23,10 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              variant="default" 
-              size="lg"
-              asChild
-              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg transition-all duration-300 px-8 py-6 text-lg"
-            >
-              <Link href="/docs">
-                <span className="flex items-center gap-2">
-                  Get Started
-                  <ArrowRightIcon className="size-5" />
-                </span>
-              </Link>
-            </Button>
+          <div>
             <Button 
               variant="outline" 
               size="lg"
-              asChild
               className="border-2 hover:bg-primary/5 transition-all duration-300 px-8 py-6 text-lg"
             >
               <a href="https://github.com/clood/planetheat" target="_blank" rel="noopener noreferrer">
@@ -56,49 +41,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="group p-8 border border-border/50 rounded-2xl bg-gradient-to-br from-background to-muted/20 transition-all duration-500">
-            <div className="space-y-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-6 h-6 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold">Lightning Fast Setup</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Zero-config React Router integration with Next.js. Get your modern SPA running in under 60 seconds with our optimized template.
-              </p>
-            </div>
-          </div>
-          
-          <div className="group p-8 border border-border/50 rounded-2xl bg-gradient-to-br from-background to-muted/20 transition-all duration-500">
-            <div className="space-y-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-6 h-6 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold">Seamless Client Routing</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Experience buttery-smooth navigation with client-side routing while maintaining all the powerful features of Next.js ecosystem.
-              </p>
-            </div>
-          </div>
-          
-          <div className="group p-8 border border-border/50 rounded-2xl bg-gradient-to-br from-background to-muted/20 transition-all duration-500">
-            <div className="space-y-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-6 h-6 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold">Developer Experience</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Clean, intuitive architecture with TypeScript support, modern tooling, and a codebase that scales effortlessly with your project.
-              </p>
-            </div>
-          </div>
-        </div>
+        <section>
+          <Predictor />
+        </section>
       </div>
     </div>
   );
