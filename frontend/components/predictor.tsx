@@ -7,10 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-type PredictionResponse = {
+export type PredictionResponse = {
+  LandAverageTemperature: number;
+  LandMaxTemperature: number;
+  LandMinTemperature: number;
+  LandAndOceanAverageTemperature: number;
+};
+
+export type ResultState = PredictionResponse & {
   year: number;
-  temperature: number;
-  unit: string;
   model: string;
 };
 
@@ -20,19 +25,30 @@ function cToF(c: number) {
 
 const currentYear = new Date().getFullYear();
 
+function DataPoint({ label, value, unit, useFahrenheit }: { label: string; value: number; unit: string; useFahrenheit: boolean; }) {
+  const displayValue = useFahrenheit ? cToF(value) : value;
+  const displayUnit = useFahrenheit ? "°F" : unit;
+
+  return (
+    <div className="rounded-lg border bg-background/40 p-3">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div className="text-sm font-medium">{displayValue.toFixed(3)} {displayUnit}</div>
+    </div>
+  );
+}
+
 export function Predictor() {
   const [year, setYear] = useState<number>(currentYear);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<PredictionResponse | null>(null);
+  const [result, setResult] = useState<ResultState | null>(null);
   const [useFahrenheit, setUseFahrenheit] = useState(false);
 
   const displayTemperature = useMemo(() => {
     if (!result)
       return null;
 
-    const tempC = result.temperature;
-
+    const tempC = result.LandAndOceanAverageTemperature;
     return useFahrenheit ? cToF(tempC) : tempC;
   }, [result, useFahrenheit]);
 
@@ -50,7 +66,7 @@ export function Predictor() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/predict", {
+      const res = await fetch("http://localhost:8080/api/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ year }),
@@ -61,8 +77,12 @@ export function Predictor() {
         throw new Error(data?.error || `Request failed with status ${res.status}`);
       }
 
-      const data = (await res.json()) as PredictionResponse;
-      setResult(data);
+      const json = await res.json();
+      if (json.error)
+        throw new Error(json.error);
+
+      const data = json as PredictionResponse;
+      setResult({ ...data, year, model: "ML-LSTM-v1" });
     }
     catch (err: any) {
       setError(err?.message || "Something went wrong");
@@ -99,14 +119,14 @@ export function Predictor() {
                   id="year"
                   type="number"
                   inputMode="numeric"
-                  min={1800}
-                  max={2300}
+                  min={1850}
+                  max={2150}
                   value={year}
                   onChange={(e) => setYear(parseInt(e.target.value || "0", 10))}
                   placeholder="e.g. 2050"
                   aria-invalid={!!error}
                 />
-                <p className="text-xs text-muted-foreground">Supported range: 1800 – 2300</p>
+                <p className="text-xs text-muted-foreground">Supported range: 1850 – 2150</p>
               </div>
 
               <div className="flex items-center">
@@ -147,24 +167,14 @@ export function Predictor() {
                   {displayTemperature?.toFixed(2)} {displayUnit}
                 </div>
                 <div className="mt-1 text-xs italic text-muted-foreground">
-                  Note: This is a simplified demo output and not intended for scientific use.
+                  Land & Ocean Average Temperature. Other metrics below.
                 </div>
 
-                <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <div className="rounded-lg border bg-background/40 p-3">
-                    <div className="text-xs text-muted-foreground">Model</div>
-                    <div className="text-sm font-medium">{result.model}</div>
-                  </div>
-
-                  <div className="rounded-lg border bg-background/40 p-3">
-                    <div className="text-xs text-muted-foreground">Original Unit</div>
-                    <div className="text-sm font-medium">{result.unit}</div>
-                  </div>
-
-                  <div className="rounded-lg border bg-background/40 p-3">
-                    <div className="text-xs text-muted-foreground">Requested Year</div>
-                    <div className="text-sm font-medium">{result.year}</div>
-                  </div>
+                <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <DataPoint label="Land Average" value={result.LandAverageTemperature} unit="°C" useFahrenheit={useFahrenheit} />
+                  <DataPoint label="Land Maximum" value={result.LandMaxTemperature} unit="°C" useFahrenheit={useFahrenheit} />
+                  <DataPoint label="Land Minimum" value={result.LandMinTemperature} unit="°C" useFahrenheit={useFahrenheit} />
+                  <DataPoint label="Land & Ocean Avg." value={result.LandAndOceanAverageTemperature} unit="°C" useFahrenheit={useFahrenheit} />
                 </div>
               </div>
             )}

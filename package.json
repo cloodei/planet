@@ -1,0 +1,11 @@
+{
+  "name": "planet",
+  "version": "1.0.0",
+  "scripts": {
+    "backend": "cd backend && uvicorn main:app --reload --port 8080",
+    "frontend": "cd frontend && bun run dev",
+    "install:all": "bun install:backend && bun install:frontend",
+    "install:backend": "cd backend && uv sync",
+    "install:frontend": "cd frontend && bun install"
+  }
+}

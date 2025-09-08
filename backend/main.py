@@ -1,25 +1,29 @@
-import numpy as np
+import prelude
+from pydantic import BaseModel
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from keras.models import load_model
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_headers=["Content-Type"]
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-
-model = load_model(filepath="model.keras")
 
 class Item(BaseModel):
     year: int
 
+@app.get("/api")
+def root():
+    return ""
+
 @app.post("/api/predict")
 def root(item: Item):
     year = item.year
-    return {}
+    if year > 2150:
+        return {"error": "Unprojectable year"}
 
-# uvicorn main:app --reload --port 8080
+    return prelude.predict(year)

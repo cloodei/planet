@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Predictor } from "@/components/predictor";
 
 export default function Home() {
+  fetch("http://localhost:8080/api");
+
   return (
     <div className="relative overflow-hidden">
       <div className="relative space-y-20">
